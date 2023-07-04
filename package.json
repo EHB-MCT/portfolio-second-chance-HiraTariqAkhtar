@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/EHB-MCT/portfolio-second-chance-HiraTariqAkhtar#readme",
   "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.22",
     "react": "^18.2.0"
   }
 }
