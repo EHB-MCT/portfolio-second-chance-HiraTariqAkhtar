@@ -4,6 +4,8 @@ const connection = require("./dbConnection");
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.urlencoded());
+
 app.use(express.static("src"));
 
 const PORT = 3000;
@@ -73,6 +75,7 @@ connection.query(checkDataQuery, function (error, results, fields) {
     }
   });
 
+
 /**
  * GET- endpoint, root page
  * 
@@ -82,3 +85,26 @@ connection.query(checkDataQuery, function (error, results, fields) {
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/form.html");
 });
+
+
+/**
+ * POST endpoint, edit count of letter
+ * 
+ * @params entered name in form
+ * @params selected gender in form
+ * @returns 
+ * 
+ */
+app.post("/postName", (req, res) => {
+    const name = req.body.name
+    const gender = req.body.gender
+
+    const firstLetter = name.charAt(0).toLowerCase()
+    //console.log(firstLetter)
+
+    const updateLetterCountQuery = `UPDATE names SET count = count + 1 WHERE letter = "${firstLetter}" AND gender = "${gender}"`
+
+    connection.query(updateLetterCountQuery, function (error, results, fields) {
+        if (error) throw error;
+      });
+})
