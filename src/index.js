@@ -77,7 +77,7 @@ connection.query(checkDataQuery, function (error, results, fields) {
 
 
 /**
- * GET- endpoint, root page
+ * GET endpoint, root page
  * 
  * @returns form page
  * 
@@ -91,8 +91,8 @@ app.get("/", (req, res) => {
  * POST endpoint, edit count of letter
  * 
  * @params entered name in form
- * @params selected gender in form
- * @returns 
+ * @params selected gender in form 
+ * @returns chart page
  * 
  */
 app.post("/postName", (req, res) => {
@@ -106,5 +106,16 @@ app.post("/postName", (req, res) => {
 
     connection.query(updateLetterCountQuery, function (error, results, fields) {
         if (error) throw error;
+        res.redirect("/chart");
       });
 })
+
+/**
+ * GET endpoint, chart page
+ * 
+ * @returns chart page
+ * 
+ */
+app.get("/chart", (req, res) => {
+  res.sendFile(__dirname + "/chart.html");
+});
