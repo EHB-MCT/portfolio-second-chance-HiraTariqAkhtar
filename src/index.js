@@ -77,7 +77,7 @@ connection.query(checkDataQuery, function (error, results, fields) {
 
 
 /**
- * GET- endpoint, root page
+ * GET endpoint, root page
  * 
  * @returns form page
  * 
@@ -91,8 +91,8 @@ app.get("/", (req, res) => {
  * POST endpoint, edit count of letter
  * 
  * @params entered name in form
- * @params selected gender in form
- * @returns 
+ * @params selected gender in form 
+ * @returns chart page
  * 
  */
 app.post("/postName", (req, res) => {
@@ -106,5 +106,101 @@ app.post("/postName", (req, res) => {
 
     connection.query(updateLetterCountQuery, function (error, results, fields) {
         if (error) throw error;
+        res.redirect("/chart");
       });
 })
+
+/**
+ * GET endpoint, chart page
+ * 
+ * @returns chart page
+ */
+app.get("/chart", (req, res) => {
+  const maleCountQuery = `SELECT count FROM names WHERE gender = "male"`;
+  const totalMaleQuery = `SELECT SUM(count) FROM names WHERE gender = "male"`;
+  const femaleCountQuery = `SELECT count FROM names WHERE gender = "female"`;
+  const totalFemaleQuery = `SELECT SUM(count) FROM names WHERE gender = "female"`;
+
+  let males = [];
+  let totalMales = 0
+  let females = [];
+  let totalFemales = 0
+
+  connection.query(totalMaleQuery, function(error, results, fields){
+    if (error) throw error;
+    totalMales = results[0]['SUM(count)']
+    
+  connection.query(totalFemaleQuery, function(error, results, fields){
+    if (error) throw error;
+    totalFemales = results[0]['SUM(count)']
+    
+    connection.query(maleCountQuery, function (error, results, fields) {
+      if (error) throw error;
+      results.forEach(element => {
+        males.push((element.count / totalMales) * 100);
+      });
+      
+      connection.query(femaleCountQuery, function (error, results, fields) {
+        if (error) throw error;
+        results.forEach(element => {
+          females.push((element.count / totalFemales) * 100);
+        });
+        
+        const chart = `
+        <div>
+        <canvas id="myChart"></canvas>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <script>
+        const ctx = document.getElementById('myChart');
+        
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            datasets: [
+              {
+                label: "Males",
+                backgroundColor: 'rgba(0, 0, 255, 0.3)',
+                borderColor: 'rgb(0, 0, 255)',
+                borderWidth: 1,
+                data: ${JSON.stringify(males)}
+              },
+              {
+                label: "Females",
+                backgroundColor: 'rgba(255, 192, 203, 0.5)',
+                borderColor: 'rgb(255, 192, 203)',
+                borderWidth: 1,
+                data: ${JSON.stringify(females)}
+              }
+            ]
+          },
+          options: {
+            plugins: {
+              title: {
+                display: true,
+                text: 'Number of occurences of a letter as first letter in first names (in %)',
+                font: {
+                  size: 25
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100
+              }
+            }
+          }
+        });
+        </script>
+        `;
+        
+        res.send(chart);
+      });
+    });
+  });
+  });
+});
