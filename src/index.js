@@ -163,15 +163,15 @@ app.get("/chart", (req, res) => {
             datasets: [
               {
                 label: "Males",
-                backgroundColor: 'rgba(0, 255, 0, 0.2)',
-                borderColor: 'rgb(0, 255, 0)',
+                backgroundColor: 'rgba(0, 0, 255, 0.3)',
+                borderColor: 'rgb(0, 0, 255)',
                 borderWidth: 1,
                 data: ${JSON.stringify(males)}
               },
               {
                 label: "Females",
-                backgroundColor: 'rgba(255, 255, 0, 0.2)',
-                borderColor: 'rgb(255, 255, 0)',
+                backgroundColor: 'rgba(255, 192, 203, 0.5)',
+                borderColor: 'rgb(255, 192, 203)',
                 borderWidth: 1,
                 data: ${JSON.stringify(females)}
               }
