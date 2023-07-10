@@ -63,17 +63,17 @@ VALUES
 const checkDataQuery = `SELECT COUNT(*) AS count FROM names`
   
 connection.query(checkDataQuery, function (error, results, fields) {
-    if (error) throw error;
-    
-    let count = results[0].count;
-    
-    // Insert data into the database if it is empty
-    if (count === 0) {
-      connection.query(insertDataQuery, function (error, results, fields) {
-        if (error) throw error;
-      });
-    }
-  });
+  if (error) throw error;
+  
+  let count = results[0].count;
+  
+  // Insert data into the database if it is empty
+  if (count === 0) {
+    connection.query(insertDataQuery, function (error, results, fields) {
+      if (error) throw error;
+    });
+  }
+});
 
 
 /**
@@ -96,18 +96,18 @@ app.get("/", (req, res) => {
  * 
  */
 app.post("/postName", (req, res) => {
-    const name = req.body.name
-    const gender = req.body.gender
+  const name = req.body.name
+  const gender = req.body.gender
 
-    const firstLetter = name.charAt(0).toLowerCase()
-    //console.log(firstLetter)
+  const firstLetter = name.charAt(0).toLowerCase()
+  //console.log(firstLetter)
 
-    const updateLetterCountQuery = `UPDATE names SET count = count + 1 WHERE letter = "${firstLetter}" AND gender = "${gender}"`
+  const updateLetterCountQuery = `UPDATE names SET count = count + 1 WHERE letter = "${firstLetter}" AND gender = "${gender}"`
 
-    connection.query(updateLetterCountQuery, function (error, results, fields) {
-        if (error) throw error;
-        res.redirect("/chart");
-      });
+  connection.query(updateLetterCountQuery, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect("/chart");
+  });
 })
 
 /**
@@ -130,77 +130,77 @@ app.get("/chart", (req, res) => {
     if (error) throw error;
     totalMales = results[0]['SUM(count)']
     
-  connection.query(totalFemaleQuery, function(error, results, fields){
-    if (error) throw error;
-    totalFemales = results[0]['SUM(count)']
-    
-    connection.query(maleCountQuery, function (error, results, fields) {
+    connection.query(totalFemaleQuery, function(error, results, fields){
       if (error) throw error;
-      results.forEach(element => {
-        males.push((element.count / totalMales) * 100);
-      });
+      totalFemales = results[0]['SUM(count)']
       
-      connection.query(femaleCountQuery, function (error, results, fields) {
+      connection.query(maleCountQuery, function (error, results, fields) {
         if (error) throw error;
         results.forEach(element => {
-          females.push((element.count / totalFemales) * 100);
+          males.push((element.count / totalMales) * 100);
         });
         
-        const chart = `
-        <div>
-        <canvas id="myChart"></canvas>
-        </div>
-        
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        
-        <script>
-        const ctx = document.getElementById('myChart');
-        
-        new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-            datasets: [
-              {
-                label: "Males",
-                backgroundColor: 'rgba(0, 0, 255, 0.3)',
-                borderColor: 'rgb(0, 0, 255)',
-                borderWidth: 1,
-                data: ${JSON.stringify(males)}
+        connection.query(femaleCountQuery, function (error, results, fields) {
+          if (error) throw error;
+          results.forEach(element => {
+            females.push((element.count / totalFemales) * 100);
+          });
+          
+          const chart = `
+          <div>
+          <canvas id="myChart"></canvas>
+          </div>
+          
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          
+          <script>
+          const ctx = document.getElementById('myChart');
+          
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+              datasets: [
+                {
+                  label: "Males",
+                  backgroundColor: 'rgba(0, 0, 255, 0.3)',
+                  borderColor: 'rgb(0, 0, 255)',
+                  borderWidth: 1,
+                  data: ${JSON.stringify(males)}
+                },
+                {
+                  label: "Females",
+                  backgroundColor: 'rgba(255, 192, 203, 0.5)',
+                  borderColor: 'rgb(255, 192, 203)',
+                  borderWidth: 1,
+                  data: ${JSON.stringify(females)}
+                }
+              ]
+            },
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Number of occurences of a letter as first letter in first names (in %)',
+                  font: {
+                    size: 25
+                  }
+                }
               },
-              {
-                label: "Females",
-                backgroundColor: 'rgba(255, 192, 203, 0.5)',
-                borderColor: 'rgb(255, 192, 203)',
-                borderWidth: 1,
-                data: ${JSON.stringify(females)}
-              }
-            ]
-          },
-          options: {
-            plugins: {
-              title: {
-                display: true,
-                text: 'Number of occurences of a letter as first letter in first names (in %)',
-                font: {
-                  size: 25
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100
                 }
               }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                max: 100
-              }
             }
-          }
+          });
+          </script>
+          `;
+          
+          res.send(chart);
         });
-        </script>
-        `;
-        
-        res.send(chart);
       });
     });
-  });
   });
 });
