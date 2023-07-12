@@ -1,4 +1,6 @@
 node_modules
+.DS_Store
 
 # Credentials
 dbConnection.js
+.env
