@@ -1,6 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const connection = require("./dbConnection");
+
+const connection = require("./helpers/dbConnection");
+const { checkName } = require("./helpers/checkName");
+
+const alert = require("alert");
 
 const app = express();
 app.use(bodyParser.json());
@@ -92,22 +96,25 @@ app.get("/", (req, res) => {
  * 
  * @params entered name in form
  * @params selected gender in form 
- * @returns chart page
+ * @returns chart
  * 
  */
-app.post("/postName", (req, res) => {
+app.post("/postName", async(req, res) => {
   const name = req.body.name
   const gender = req.body.gender
 
-  const firstLetter = name.charAt(0).toLowerCase()
-  //console.log(firstLetter)
-
-  const updateLetterCountQuery = `UPDATE names SET count = count + 1 WHERE letter = "${firstLetter}" AND gender = "${gender}"`
-
-  connection.query(updateLetterCountQuery, function (error, results, fields) {
-    if (error) throw error;
-    res.redirect("/chart");
-  });
+  try{
+    const firstLetter = await checkName(name)
+    const updateLetterCountQuery = `UPDATE names SET count = count + 1 WHERE letter = "${firstLetter}" AND gender = "${gender}"`
+  
+    connection.query(updateLetterCountQuery, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect("/chart");
+    });
+  } catch (error) {
+    alert(error.message);
+    res.sendFile(__dirname + "/form.html");
+  }
 })
 
 /**
