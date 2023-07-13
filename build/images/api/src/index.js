@@ -4,8 +4,6 @@ const bodyParser = require("body-parser");
 const connection = require("./helpers/dbConnection");
 const { checkName } = require("./helpers/checkName");
 
-const alert = require("alert");
-
 const app = express();
 app.use(bodyParser.json());
 app.use(express.urlencoded());
@@ -112,8 +110,7 @@ app.post("/postName", async(req, res) => {
       res.redirect("/chart");
     });
   } catch (error) {
-    alert(error.message);
-    res.sendFile(__dirname + "/form.html");
+    res.send(`<script>alert("${error.message}"); window.location.href = "/"; </script>`);
   }
 })
 
