@@ -154,10 +154,17 @@ app.get("/chart", (req, res) => {
           <div>
           <canvas id="myChart"></canvas>
           </div>
+
+          <button onclick="goBack()">Add another name</button>
           
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           
           <script>
+
+          function goBack() {
+            window.location.href = "/";
+          }
+
           const ctx = document.getElementById('myChart');
           
           new Chart(ctx, {
