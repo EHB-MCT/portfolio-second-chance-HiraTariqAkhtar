@@ -23,6 +23,7 @@ jobs:
         
       - name: Run tests
         run: |
+          cd build
           cd images
           cd api
           npm run test
