@@ -34,32 +34,32 @@ connection.query(createTableQuery, function (error, results, fields) {
 const insertDataQuery = `
 INSERT INTO names (letter, count, gender)
 VALUES
-('a', 0, 'male'), ('a', 0, 'female'),
+('a', 5, 'male'), ('a', 6, 'female'),
 ('b', 0, 'male'), ('b', 0, 'female'),
 ('c', 0, 'male'), ('c', 0, 'female'),
 ('d', 0, 'male'), ('d', 0, 'female'),
-('e', 0, 'male'), ('e', 0, 'female'),
+('e', 0, 'male'), ('e', 2, 'female'),
 ('f', 0, 'male'), ('f', 0, 'female'),
 ('g', 0, 'male'), ('g', 0, 'female'),
-('h', 0, 'male'), ('h', 0, 'female'),
+('h', 1, 'male'), ('h', 2, 'female'),
 ('i', 0, 'male'), ('i', 0, 'female'),
 ('j', 0, 'male'), ('j', 0, 'female'),
 ('k', 0, 'male'), ('k', 0, 'female'),
 ('l', 0, 'male'), ('l', 0, 'female'),
-('m', 0, 'male'), ('m', 0, 'female'),
-('n', 0, 'male'), ('n', 0, 'female'),
+('m', 4, 'male'), ('m', 2, 'female'),
+('n', 0, 'male'), ('n', 3, 'female'),
 ('o', 0, 'male'), ('o', 0, 'female'),
 ('p', 0, 'male'), ('p', 0, 'female'),
 ('q', 0, 'male'), ('q', 0, 'female'),
-('r', 0, 'male'), ('r', 0, 'female'),
-('s', 0, 'male'), ('s', 0, 'female'),
-('t', 0, 'male'), ('t', 0, 'female'),
-('u', 0, 'male'), ('u', 0, 'female'),
+('r', 0, 'male'), ('r', 2, 'female'),
+('s', 3, 'male'), ('s', 2, 'female'),
+('t', 1, 'male'), ('t', 2, 'female'),
+('u', 1, 'male'), ('u', 0, 'female'),
 ('v', 0, 'male'), ('v', 0, 'female'),
 ('w', 0, 'male'), ('w', 0, 'female'),
 ('x', 0, 'male'), ('x', 0, 'female'),
 ('y', 0, 'male'), ('y', 0, 'female'),
-('z', 0, 'male'), ('z', 0, 'female')
+('z', 1, 'male'), ('z', 0, 'female')
 `;
 
 const checkDataQuery = `SELECT COUNT(*) AS count FROM names`
