@@ -20,7 +20,14 @@ jobs:
         run: |
           cd build
           docker-compose up -d
-        
+      
+      - name: Install dependencies
+        run: |
+          cd build
+          cd images
+          cd api
+          npm install
+    
       - name: Run tests
         run: |
           cd build
