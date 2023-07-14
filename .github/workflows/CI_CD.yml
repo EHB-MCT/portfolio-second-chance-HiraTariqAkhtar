@@ -17,7 +17,9 @@ jobs:
           docker-compose build
       
       - name: Run docker containers
-        run: docker-compose up -d
+        run: |
+          cd build
+          docker-compose up -d
         
       - name: Run tests
         run: |
