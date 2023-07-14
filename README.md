@@ -70,7 +70,7 @@ GET(/)
 GET(/chart)
 
 # update 'count' of your name's first letter in database
-POST (/postName)
+POST(/postName)
 
 ```
 
