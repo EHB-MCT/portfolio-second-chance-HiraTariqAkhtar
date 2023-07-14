@@ -64,3 +64,6 @@
 ## CI/CD
 - https://canvas.ehb.be/courses/29128/files/1978352?module_item_id=410221
 - https://docs.docker.com/language/java/configure-ci-cd/
+  
+### watchtower
+- https://containrrr.dev/watchtower/
