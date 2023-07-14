@@ -33,7 +33,7 @@ jobs:
           cd build
           cd images
           cd api
-          npm run test
+          npm run test-ci
           
   build:
     needs: test
