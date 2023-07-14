@@ -69,7 +69,7 @@ GET(/)
 # returns 'chart'
 GET(/chart)
 
-# add 'letter' to database
+# update 'count' of your name's first letter in database
 POST (/postName)
 
 ```
