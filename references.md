@@ -67,3 +67,9 @@
   
 ### watchtower
 - https://containrrr.dev/watchtower/
+
+
+## README
+- https://www.markdownguide.org/basic-syntax/
+- https://www.makeareadme.com/
+- chatGPT
