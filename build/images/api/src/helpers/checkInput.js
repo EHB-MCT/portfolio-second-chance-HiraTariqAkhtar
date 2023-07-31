@@ -26,6 +26,21 @@ function checkName(name) {
     throw new Error("Name should not contain any spaces, numbers or special characters")
 }
 
+/**
+ * Check if user selected a color
+ * 
+ * @param color(string) : selected color
+ * @returns (string): selected color
+ */
+function checkColor(color) {
+   if (color === "") {
+       throw new Error("Please select a color")
+   }
+
+   return color
+}
+
 module.exports = {
-    checkName
+    checkName,
+    checkColor
 }
