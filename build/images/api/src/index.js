@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const connection = require("./helpers/dbConnection");
-const { checkName } = require("./helpers/checkName");
+const { checkName, checkColor } = require("./helpers/checkInput");
 
 const app = express();
 app.use(bodyParser.json());
@@ -150,8 +150,9 @@ app.post("/postName", async(req, res) => {
 
   try{
     const firstLetter = await checkName(name)
+    const colorSelected = await checkColor(color)
     const updateLetterCountQuery = `UPDATE names SET count = count + 1 WHERE letter = "${firstLetter}" AND gender = "${gender}"`
-    const updateColorCountQuery = `UPDATE colors SET count = count + 1 WHERE color = "${color}" AND gender = "${gender}"`
+    const updateColorCountQuery = `UPDATE colors SET count = count + 1 WHERE color = "${colorSelected}" AND gender = "${gender}"`
   
     connection.query(updateLetterCountQuery, function (error, results, fields) {
       if (error) throw error;
