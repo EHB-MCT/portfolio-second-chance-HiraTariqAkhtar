@@ -1,0 +1,36 @@
+const mysql = require('mysql');
+
+// Database connection configuration
+const connection = mysql.createConnection({
+    host: '<container_name of store in docker-compose.yml>',
+    port: 3306, // default MySQL port
+    user: '<your mysql root user>',
+    password: '<your mysql root password>'
+  });
+ 
+// Connect to the database
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+ 
+  console.log('connected as id ' + connection.threadId);
+});
+
+// Code for creating the database (if it doesn't exist)
+const createDatabaseQuery = `CREATE DATABASE IF NOT EXISTS <you can choose a name for the database>`;
+
+connection.query(createDatabaseQuery, function (error, results, fields) {
+  if (error) throw error;
+});
+
+// Code for using the created database
+const useDatabaseQuery = `USE <name of created database>`;
+
+connection.query(useDatabaseQuery, function (error, results, fields) {
+  if (error) throw error;
+});
+
+// Export the database connection for use in other modules
+module.exports = connection;
