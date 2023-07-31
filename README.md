@@ -1,8 +1,8 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/DhYPBlwE)
 
-# Most used letter as first letter of first name
+# Most common first letter of first name and favorite color by gender
 
-With this project, I aim to determine the most commonly used letter as the first letter of a first name, categorized by gender.
+With this project, I aim to determine the most commonly used letter as the first letter of a person's first name and their favorite color, categorized by gender.
 
 ## Prerequisites
 
@@ -57,7 +57,11 @@ Once the application is running, you can use it by following these steps:
 1. Type your firstname in the form provided
 2. Submit the form
 3. You will be directed to a chart page where you can see the percentage of names with the same first letter as yours.
-4. On the chart page, you will find a button to navigate back to the form and enter another name.
+4. On the chart page, you will find 2 buttons:
+    - With the first button, you can toggle between the charts:
+        - Chart with first letter occurences
+        - Chart with favorite color
+    - With the second button, you can navigate back to the form and enter another name
 
 ## Endpoints
 
@@ -66,10 +70,13 @@ Once the application is running, you can use it by following these steps:
 # returns 'form page'
 GET(/)
 
-# returns 'chart'
-GET(/chart)
+# returns 'chart with first letter occurences'
+GET(/chartNames)
 
-# update 'count' of your name's first letter in database
+# returns 'chart with favorite color'
+GET(/chartColors)
+
+# update 'count' of first letter and favorite color in database
 POST(/postName)
 
 ```
